@@ -1,0 +1,29 @@
+speakeasyVersion: 1.345.1
+sources:
+    kx-OAS:
+        sourceNamespace: kx-oas
+        sourceRevisionDigest: sha256:398a38b92d7eb52a32a78ccb86d32baff32b1c65d83f9deda093736ce51d73da
+        sourceBlobDigest: sha256:d111edb0eaf69aabb944e58a6b6a8da302da929296dade6a7eacd0849b76279e
+        tags:
+            - latest
+targets:
+    kx:
+        source: kx-OAS
+        sourceNamespace: kx-oas
+        sourceRevisionDigest: sha256:398a38b92d7eb52a32a78ccb86d32baff32b1c65d83f9deda093736ce51d73da
+        sourceBlobDigest: sha256:d111edb0eaf69aabb944e58a6b6a8da302da929296dade6a7eacd0849b76279e
+        outLocation: /Users/ndimares/speakeasy/client_sdks/kx/kx-typescript
+workflow:
+    workflowVersion: 1.0.0
+    sources:
+        kx-OAS:
+            inputs:
+                - location: ../openapi.yaml
+            overlays:
+                - location: ../overlay.yaml
+            registry:
+                location: registry.speakeasyapi.dev/speakeasy-bar-test/speakeasy-bar-test/kx-oas
+    targets:
+        kx:
+            target: typescript
+            source: kx-OAS
