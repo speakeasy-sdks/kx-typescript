@@ -1,0 +1,65 @@
+overlay: 1.0.0
+info:
+  title: overlay
+  version: 0.0.0
+actions:
+  - target: $["paths"]["/api/v1/config/table"]["get"]
+    update:
+      x-speakeasy-group: ai.tables
+  - target: $["paths"]["/api/v1/config/table"]["get"]
+    update:
+      x-speakeasy-name-override: list
+  - target: $["paths"]["/api/v1/config/table/{name}"]["get"]
+    update:
+      x-speakeasy-group: ai.tables
+  - target: $["paths"]["/api/v1/config/table/{name}"]["get"]
+    update:
+      x-speakeasy-name-override: getMeta
+  - target: $["paths"]["/api/v1/config/table/{name}"]["delete"]
+    update:
+      x-speakeasy-group: ai.tables
+  - target: $["paths"]["/api/v1/config/table/{name}"]["delete"]
+    update:
+      x-speakeasy-name-override: delete
+  - target: $["paths"]["/api/v1/config/table/{name}"]["post"]
+    update:
+      x-speakeasy-group: ai.tables
+  - target: $["paths"]["/api/v1/config/table/{name}"]["post"]
+    update:
+      x-speakeasy-name-override: create
+  - target: $["paths"]["/api/v1/insert"]["post"]
+    update:
+      x-speakeasy-group: ai
+  - target: $["paths"]["/api/v1/insert"]["post"]
+    update:
+      x-speakeasy-name-override: insert
+  - target: $["paths"]["/api/v1/train"]["post"]
+    update:
+      x-speakeasy-group: ai
+  - target: $["paths"]["/api/v1/train"]["post"]
+    update:
+      x-speakeasy-name-override: train
+  - target: $["paths"]["/api/v1/kxi/search"]["post"]
+    update:
+      x-speakeasy-group: ai
+  - target: $["paths"]["/api/v1/kxi/search"]["post"]
+    update:
+      x-speakeasy-name-override: vectorSearch
+  - target: $["paths"]["/api/v1/kxi/hybridSearch"]["post"]
+    update:
+      x-speakeasy-group: ai
+  - target: $["paths"]["/api/v1/kxi/hybridSearch"]["post"]
+    update:
+      x-speakeasy-name-override: hybridSearch
+  - target: $["paths"]["/api/v1/data"]["post"]
+    update:
+      x-speakeasy-group: ai.data
+  - target: $["paths"]["/api/v1/data"]["post"]
+    update:
+      x-speakeasy-name-override: query
+  - target: $["paths"]["/api/v1/version"]["get"]
+    update:
+      x-speakeasy-group: ai.version
+  - target: $["paths"]["/api/v1/version"]["get"]
+    update:
+      x-speakeasy-name-override: get
