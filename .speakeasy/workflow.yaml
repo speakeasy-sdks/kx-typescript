@@ -2,9 +2,9 @@ workflowVersion: 1.0.0
 sources:
     kx-OAS:
         inputs:
-            - location: /openapi.yaml
+            - location: ./openapi.yaml
         overlays:
-            - location: /overlay.yaml
+            - location: ./overlay.yaml
         registry:
             location: registry.speakeasyapi.dev/speakeasy-bar-test/speakeasy-bar-test/kx-oas
 targets:
