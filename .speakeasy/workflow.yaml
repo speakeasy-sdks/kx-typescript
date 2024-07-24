@@ -6,7 +6,7 @@ sources:
         overlays:
             - location: ./overlay.yaml
         registry:
-            location: registry.speakeasyapi.dev/speakeasy-bar-test/speakeasy-bar-test/kx-oas
+            location: registry.speakeasyapi.dev/kx/kx/kx-oas
 targets:
     kx:
         target: typescript
