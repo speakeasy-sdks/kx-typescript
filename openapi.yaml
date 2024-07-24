@@ -32,6 +32,21 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Table'
+                "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+
   /api/v1/config/table/{name}:
     get:
       operationId: kdb.ai.table.meta
@@ -53,6 +68,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Table'
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+
       example:
         {
             "type": "splayed",
@@ -267,6 +297,20 @@ paths:
               schema:
                 $ref: '#/components/schemas/SuccessResponse'
               example: Insert successful.
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
   /api/v1/train:
     post:
       operationId: kdb.ai.train
@@ -321,7 +365,19 @@ paths:
                 example2:
                   value: {"error": "Index does not require training"}
                 example3:
-                  value: {"error": "Error persisting Trained Index to disk, to Persist Index please drop, recreate, and retrain."}       
+                  value: {"error": "Error persisting Trained Index to disk, to Persist Index please drop, recreate, and retrain."}
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
   /api/v1/kxi/search:
     post:
       operationId: kdb.ai.search
@@ -407,6 +463,18 @@ paths:
               schema:
                 type: object
               example: {"error": "n for sparse search should be greater than 0"}
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
   /api/v1/kxi/hybridSearch:
     post:
       operationId: kdb.ai.hybridSearch
@@ -492,6 +560,18 @@ paths:
               schema:
                 type: object
               example: {"error": "n for sparse search should be greater than 0"}
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
   /api/v1/data:
     post:
       operationId: kdb.ai.query
@@ -580,6 +660,18 @@ paths:
                         }
                     ]
                 }
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
       x-codeSamples:
         - lang: curl
           source: |
@@ -599,6 +691,7 @@ paths:
             # Read the file in with qce, c.java, c.js, etc
             qce
             q) -9!read1`:results.dat
+
   /api/v1/ready:
     get:
       summary: Health check endpoint, returns 200 OK if the service is operating correctly
@@ -1023,3 +1116,83 @@ components:
           - type
           - metric
           - trainingVectors
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            required:
+              - description
+            type: object
+            properties:
+              description:
+                type: string
+                default: Bad Request
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            required:
+              - description
+            type: object
+            properties:
+              description:
+                type: string
+                default: Unauthorized
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            required:
+              - description
+            type: object
+            properties:
+              description:
+                default: Forbidden
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            required:
+              - description
+            type: object
+            properties:
+              description:
+                default: Not Found
+    TooManyRequests:
+      description: Rate Limit Exceeded
+      content:
+        application/json:
+          schema:
+            required:
+              - description
+            type: object
+            properties:
+              description:
+                default: Rate Limit Exceeded
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            required:
+              - description
+              - extras
+            properties:
+              description:
+                default: Internal Server Error
+    ServiceUnavailable:
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            required:
+              - description
+            type: object
+            properties:
+              description:
+                default: Service Unavailable

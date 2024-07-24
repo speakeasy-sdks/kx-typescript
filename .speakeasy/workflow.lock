@@ -2,18 +2,17 @@ speakeasyVersion: 1.345.4
 sources:
     kx-OAS:
         sourceNamespace: kx-oas
-        sourceRevisionDigest: sha256:1f6e628469e7162fe4633dc85f3e4aa8d7a480c5c87526397a6c27a85eceef97
-        sourceBlobDigest: sha256:5a9ae98ee2ff3513150934ad61a139930982453c5a2b8fcbe7cf0673de45df5a
+        sourceRevisionDigest: sha256:2f9d60774385fe82f6fa79f5331f206f5debf00cce4ae715cad690fe6440450e
+        sourceBlobDigest: sha256:f184d991c957b675dcf8c2efdf72498c513116878d27dd5dbe3d189972562671
         tags:
             - latest
-            - main
 targets:
     kx:
         source: kx-OAS
         sourceNamespace: kx-oas
-        sourceRevisionDigest: sha256:1f6e628469e7162fe4633dc85f3e4aa8d7a480c5c87526397a6c27a85eceef97
-        sourceBlobDigest: sha256:5a9ae98ee2ff3513150934ad61a139930982453c5a2b8fcbe7cf0673de45df5a
-        outLocation: /github/workspace/repo
+        sourceRevisionDigest: sha256:2f9d60774385fe82f6fa79f5331f206f5debf00cce4ae715cad690fe6440450e
+        sourceBlobDigest: sha256:f184d991c957b675dcf8c2efdf72498c513116878d27dd5dbe3d189972562671
+        outLocation: /Users/sagar/go/src/kx-typescript
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest

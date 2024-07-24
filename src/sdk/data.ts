@@ -9,6 +9,7 @@ import { HTTPClient } from "../lib/http.js";
 import * as schemas$ from "../lib/schemas.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as components from "../models/components/index.js";
+import * as errors from "../models/errors/index.js";
 import * as operations from "../models/operations/index.js";
 
 export enum QueryAcceptEnum {
@@ -101,16 +102,26 @@ export class Data extends ClientSDK {
 
         const response = await this.do$(request$, {
             context,
-            errorCodes: ["4XX", "5XX"],
+            errorCodes: ["401", "403", "404", "429", "4XX", "500", "503", "5XX"],
             retryConfig: options?.retries || this.options$.retryConfig,
             retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
         });
 
+        const responseFields$ = {
+            HttpMeta: { Response: response, Request: request$ },
+        };
+
         const [result$] = await this.matcher<operations.KdbAiQueryResponse>()
             .stream(200, operations.KdbAiQueryResponse$inboundSchema)
             .json(200, operations.KdbAiQueryResponse$inboundSchema)
+            .json(401, errors.Unauthorized$inboundSchema, { err: true })
+            .json(403, errors.Forbidden$inboundSchema, { err: true })
+            .json(404, errors.NotFound$inboundSchema, { err: true })
+            .json(429, errors.TooManyRequests$inboundSchema, { err: true })
+            .json(500, errors.InternalServerError$inboundSchema, { err: true })
+            .json(503, errors.ServiceUnavailable$inboundSchema, { err: true })
             .fail(["4XX", "5XX"])
-            .match(response);
+            .match(response, { extraFields: responseFields$ });
 
         return result$;
     }

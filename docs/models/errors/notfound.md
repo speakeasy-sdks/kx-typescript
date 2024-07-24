@@ -1,0 +1,10 @@
+# NotFound
+
+Not Found
+
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `description`      | *any*              | :heavy_check_mark: | N/A                |

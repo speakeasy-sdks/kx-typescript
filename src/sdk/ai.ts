@@ -10,6 +10,7 @@ import { HTTPClient } from "../lib/http.js";
 import * as schemas$ from "../lib/schemas.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as components from "../models/components/index.js";
+import * as errors from "../models/errors/index.js";
 import * as operations from "../models/operations/index.js";
 import { Data } from "./data.js";
 import { Heath } from "./heath.js";
@@ -62,6 +63,86 @@ export class Ai extends ClientSDK {
     private _version?: Version;
     get version(): Version {
         return (this._version ??= new Version(this.options$));
+    }
+
+    /**
+     * Insert data into a table.
+     *
+     * @remarks
+     * Request body is a tuple of (target table name, data table) serialized into a PyKX octet stream with pykx._wrappers._to_bytes(6, pykx.toq([table, data]), 1)[1])
+     */
+    async insertRaw(request: Uint8Array | string, options?: RequestOptions): Promise<string> {
+        const input$ = request;
+
+        const payload$ = schemas$.parse(
+            input$,
+            (value$) => b64$.zodOutbound.parse(value$),
+            "Input validation failed"
+        );
+        const body$ = payload$;
+
+        const path$ = this.templateURLComponent("/api/v1/insert")();
+
+        const query$ = "";
+
+        const headers$ = new Headers({
+            "Content-Type": "application/octet-stream",
+            Accept: "text/plain",
+        });
+
+        let security$;
+        if (typeof this.options$.apiKeyAuth === "function") {
+            security$ = { apiKeyAuth: await this.options$.apiKeyAuth() };
+        } else if (this.options$.apiKeyAuth) {
+            security$ = { apiKeyAuth: this.options$.apiKeyAuth };
+        } else {
+            security$ = {};
+        }
+        const context = {
+            operationID: "kdb.ai.insert_raw",
+            oAuth2Scopes: [],
+            securitySource: this.options$.apiKeyAuth,
+        };
+        const securitySettings$ = this.resolveGlobalSecurity(security$);
+
+        const request$ = this.createRequest$(
+            context,
+            {
+                security: securitySettings$,
+                method: "POST",
+                path: path$,
+                headers: headers$,
+                query: query$,
+                body: body$,
+                timeoutMs: options?.timeoutMs || this.options$.timeoutMs || -1,
+            },
+            options
+        );
+
+        const response = await this.do$(request$, {
+            context,
+            errorCodes: ["400", "401", "403", "404", "429", "4XX", "500", "503", "5XX"],
+            retryConfig: options?.retries || this.options$.retryConfig,
+            retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
+        });
+
+        const responseFields$ = {
+            HttpMeta: { Response: response, Request: request$ },
+        };
+
+        const [result$] = await this.matcher<string>()
+            .text(200, z.string())
+            .json(400, errors.BadRequest$inboundSchema, { err: true })
+            .json(401, errors.Unauthorized$inboundSchema, { err: true })
+            .json(403, errors.Forbidden$inboundSchema, { err: true })
+            .json(404, errors.NotFound$inboundSchema, { err: true })
+            .json(429, errors.TooManyRequests$inboundSchema, { err: true })
+            .json(500, errors.InternalServerError$inboundSchema, { err: true })
+            .json(503, errors.ServiceUnavailable$inboundSchema, { err: true })
+            .fail(["4XX", "5XX"])
+            .match(response, { extraFields: responseFields$ });
+
+        return result$;
     }
 
     /**
@@ -123,157 +204,26 @@ export class Ai extends ClientSDK {
 
         const response = await this.do$(request$, {
             context,
-            errorCodes: ["4XX", "5XX"],
+            errorCodes: ["400", "401", "403", "404", "429", "4XX", "500", "503", "5XX"],
             retryConfig: options?.retries || this.options$.retryConfig,
             retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
         });
+
+        const responseFields$ = {
+            HttpMeta: { Response: response, Request: request$ },
+        };
 
         const [result$] = await this.matcher<string>()
             .text(200, z.string())
+            .json(400, errors.BadRequest$inboundSchema, { err: true })
+            .json(401, errors.Unauthorized$inboundSchema, { err: true })
+            .json(403, errors.Forbidden$inboundSchema, { err: true })
+            .json(404, errors.NotFound$inboundSchema, { err: true })
+            .json(429, errors.TooManyRequests$inboundSchema, { err: true })
+            .json(500, errors.InternalServerError$inboundSchema, { err: true })
+            .json(503, errors.ServiceUnavailable$inboundSchema, { err: true })
             .fail(["4XX", "5XX"])
-            .match(response);
-
-        return result$;
-    }
-
-    /**
-     * Insert data into a table.
-     *
-     * @remarks
-     * Request body is a tuple of (target table name, data table) serialized into a PyKX octet stream with pykx._wrappers._to_bytes(6, pykx.toq([table, data]), 1)[1])
-     */
-    async insertRaw(request: Uint8Array | string, options?: RequestOptions): Promise<string> {
-        const input$ = request;
-
-        const payload$ = schemas$.parse(
-            input$,
-            (value$) => b64$.zodOutbound.parse(value$),
-            "Input validation failed"
-        );
-        const body$ = payload$;
-
-        const path$ = this.templateURLComponent("/api/v1/insert")();
-
-        const query$ = "";
-
-        const headers$ = new Headers({
-            "Content-Type": "application/octet-stream",
-            Accept: "text/plain",
-        });
-
-        let security$;
-        if (typeof this.options$.apiKeyAuth === "function") {
-            security$ = { apiKeyAuth: await this.options$.apiKeyAuth() };
-        } else if (this.options$.apiKeyAuth) {
-            security$ = { apiKeyAuth: this.options$.apiKeyAuth };
-        } else {
-            security$ = {};
-        }
-        const context = {
-            operationID: "kdb.ai.insert_raw",
-            oAuth2Scopes: [],
-            securitySource: this.options$.apiKeyAuth,
-        };
-        const securitySettings$ = this.resolveGlobalSecurity(security$);
-
-        const request$ = this.createRequest$(
-            context,
-            {
-                security: securitySettings$,
-                method: "POST",
-                path: path$,
-                headers: headers$,
-                query: query$,
-                body: body$,
-                timeoutMs: options?.timeoutMs || this.options$.timeoutMs || -1,
-            },
-            options
-        );
-
-        const response = await this.do$(request$, {
-            context,
-            errorCodes: ["4XX", "5XX"],
-            retryConfig: options?.retries || this.options$.retryConfig,
-            retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
-        });
-
-        const [result$] = await this.matcher<string>()
-            .text(200, z.string())
-            .fail(["4XX", "5XX"])
-            .match(response);
-
-        return result$;
-    }
-
-    /**
-     * Train index on the table (IVF and IVFPQ only).
-     *
-     * @remarks
-     * Request body is a tuple of (target table name, data table)
-     */
-    async trainRaw(
-        request: Uint8Array | string,
-        options?: RequestOptions
-    ): Promise<operations.KdbAiTrainRawResponse> {
-        const input$ = request;
-
-        const payload$ = schemas$.parse(
-            input$,
-            (value$) => b64$.zodOutbound.parse(value$),
-            "Input validation failed"
-        );
-        const body$ = payload$;
-
-        const path$ = this.templateURLComponent("/api/v1/train")();
-
-        const query$ = "";
-
-        const headers$ = new Headers({
-            "Content-Type": "application/octet-stream",
-            Accept: "text/plain",
-        });
-
-        let security$;
-        if (typeof this.options$.apiKeyAuth === "function") {
-            security$ = { apiKeyAuth: await this.options$.apiKeyAuth() };
-        } else if (this.options$.apiKeyAuth) {
-            security$ = { apiKeyAuth: this.options$.apiKeyAuth };
-        } else {
-            security$ = {};
-        }
-        const context = {
-            operationID: "kdb.ai.train_raw",
-            oAuth2Scopes: [],
-            securitySource: this.options$.apiKeyAuth,
-        };
-        const securitySettings$ = this.resolveGlobalSecurity(security$);
-
-        const request$ = this.createRequest$(
-            context,
-            {
-                security: securitySettings$,
-                method: "POST",
-                path: path$,
-                headers: headers$,
-                query: query$,
-                body: body$,
-                timeoutMs: options?.timeoutMs || this.options$.timeoutMs || -1,
-            },
-            options
-        );
-
-        const response = await this.do$(request$, {
-            context,
-            errorCodes: ["400", "4XX", "5XX"],
-            retryConfig: options?.retries || this.options$.retryConfig,
-            retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
-        });
-
-        const [result$] = await this.matcher<operations.KdbAiTrainRawResponse>()
-            .text(200, operations.KdbAiTrainRawResponse$inboundSchema)
-            .text(202, operations.KdbAiTrainRawResponse$inboundSchema)
-            .fail([400, "4XX", "5XX"])
-            .match(response);
+            .match(response, { extraFields: responseFields$ });
 
         return result$;
     }
@@ -337,16 +287,109 @@ export class Ai extends ClientSDK {
 
         const response = await this.do$(request$, {
             context,
-            errorCodes: ["400", "4XX", "5XX"],
+            errorCodes: ["400", "401", "403", "404", "429", "4XX", "500", "503", "5XX"],
             retryConfig: options?.retries || this.options$.retryConfig,
             retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
         });
+
+        const responseFields$ = {
+            HttpMeta: { Response: response, Request: request$ },
+        };
 
         const [result$] = await this.matcher<operations.KdbAiTrainJsonResponse>()
             .text(200, operations.KdbAiTrainJsonResponse$inboundSchema)
             .text(202, operations.KdbAiTrainJsonResponse$inboundSchema)
             .fail([400, "4XX", "5XX"])
-            .match(response);
+            .json(401, errors.Unauthorized$inboundSchema, { err: true })
+            .json(403, errors.Forbidden$inboundSchema, { err: true })
+            .json(404, errors.NotFound$inboundSchema, { err: true })
+            .json(429, errors.TooManyRequests$inboundSchema, { err: true })
+            .json(500, errors.InternalServerError$inboundSchema, { err: true })
+            .json(503, errors.ServiceUnavailable$inboundSchema, { err: true })
+            .match(response, { extraFields: responseFields$ });
+
+        return result$;
+    }
+
+    /**
+     * Train index on the table (IVF and IVFPQ only).
+     *
+     * @remarks
+     * Request body is a tuple of (target table name, data table)
+     */
+    async trainRaw(
+        request: Uint8Array | string,
+        options?: RequestOptions
+    ): Promise<operations.KdbAiTrainRawResponse> {
+        const input$ = request;
+
+        const payload$ = schemas$.parse(
+            input$,
+            (value$) => b64$.zodOutbound.parse(value$),
+            "Input validation failed"
+        );
+        const body$ = payload$;
+
+        const path$ = this.templateURLComponent("/api/v1/train")();
+
+        const query$ = "";
+
+        const headers$ = new Headers({
+            "Content-Type": "application/octet-stream",
+            Accept: "text/plain",
+        });
+
+        let security$;
+        if (typeof this.options$.apiKeyAuth === "function") {
+            security$ = { apiKeyAuth: await this.options$.apiKeyAuth() };
+        } else if (this.options$.apiKeyAuth) {
+            security$ = { apiKeyAuth: this.options$.apiKeyAuth };
+        } else {
+            security$ = {};
+        }
+        const context = {
+            operationID: "kdb.ai.train_raw",
+            oAuth2Scopes: [],
+            securitySource: this.options$.apiKeyAuth,
+        };
+        const securitySettings$ = this.resolveGlobalSecurity(security$);
+
+        const request$ = this.createRequest$(
+            context,
+            {
+                security: securitySettings$,
+                method: "POST",
+                path: path$,
+                headers: headers$,
+                query: query$,
+                body: body$,
+                timeoutMs: options?.timeoutMs || this.options$.timeoutMs || -1,
+            },
+            options
+        );
+
+        const response = await this.do$(request$, {
+            context,
+            errorCodes: ["400", "401", "403", "404", "429", "4XX", "500", "503", "5XX"],
+            retryConfig: options?.retries || this.options$.retryConfig,
+            retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
+        });
+
+        const responseFields$ = {
+            HttpMeta: { Response: response, Request: request$ },
+        };
+
+        const [result$] = await this.matcher<operations.KdbAiTrainRawResponse>()
+            .text(200, operations.KdbAiTrainRawResponse$inboundSchema)
+            .text(202, operations.KdbAiTrainRawResponse$inboundSchema)
+            .fail([400, "4XX", "5XX"])
+            .json(401, errors.Unauthorized$inboundSchema, { err: true })
+            .json(403, errors.Forbidden$inboundSchema, { err: true })
+            .json(404, errors.NotFound$inboundSchema, { err: true })
+            .json(429, errors.TooManyRequests$inboundSchema, { err: true })
+            .json(500, errors.InternalServerError$inboundSchema, { err: true })
+            .json(503, errors.ServiceUnavailable$inboundSchema, { err: true })
+            .match(response, { extraFields: responseFields$ });
 
         return result$;
     }
@@ -407,15 +450,25 @@ export class Ai extends ClientSDK {
 
         const response = await this.do$(request$, {
             context,
-            errorCodes: ["400", "4XX", "5XX"],
+            errorCodes: ["400", "401", "403", "404", "429", "4XX", "500", "503", "5XX"],
             retryConfig: options?.retries || this.options$.retryConfig,
             retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
         });
 
+        const responseFields$ = {
+            HttpMeta: { Response: response, Request: request$ },
+        };
+
         const [result$] = await this.matcher<components.RCResponse>()
             .json(200, components.RCResponse$inboundSchema)
             .fail([400, "4XX", "5XX"])
-            .match(response);
+            .json(401, errors.Unauthorized$inboundSchema, { err: true })
+            .json(403, errors.Forbidden$inboundSchema, { err: true })
+            .json(404, errors.NotFound$inboundSchema, { err: true })
+            .json(429, errors.TooManyRequests$inboundSchema, { err: true })
+            .json(500, errors.InternalServerError$inboundSchema, { err: true })
+            .json(503, errors.ServiceUnavailable$inboundSchema, { err: true })
+            .match(response, { extraFields: responseFields$ });
 
         return result$;
     }
@@ -476,15 +529,25 @@ export class Ai extends ClientSDK {
 
         const response = await this.do$(request$, {
             context,
-            errorCodes: ["400", "4XX", "5XX"],
+            errorCodes: ["400", "401", "403", "404", "429", "4XX", "500", "503", "5XX"],
             retryConfig: options?.retries || this.options$.retryConfig,
             retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
         });
 
+        const responseFields$ = {
+            HttpMeta: { Response: response, Request: request$ },
+        };
+
         const [result$] = await this.matcher<components.RCResponse>()
             .json(200, components.RCResponse$inboundSchema)
             .fail([400, "4XX", "5XX"])
-            .match(response);
+            .json(401, errors.Unauthorized$inboundSchema, { err: true })
+            .json(403, errors.Forbidden$inboundSchema, { err: true })
+            .json(404, errors.NotFound$inboundSchema, { err: true })
+            .json(429, errors.TooManyRequests$inboundSchema, { err: true })
+            .json(500, errors.InternalServerError$inboundSchema, { err: true })
+            .json(503, errors.ServiceUnavailable$inboundSchema, { err: true })
+            .match(response, { extraFields: responseFields$ });
 
         return result$;
     }

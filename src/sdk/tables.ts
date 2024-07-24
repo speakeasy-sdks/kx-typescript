@@ -11,7 +11,6 @@ import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as components from "../models/components/index.js";
 import * as errors from "../models/errors/index.js";
 import * as operations from "../models/operations/index.js";
-import * as z from "zod";
 
 export class Tables extends ClientSDK {
     private readonly options$: SDKOptions & { hooks?: SDKHooks };
@@ -43,7 +42,7 @@ export class Tables extends ClientSDK {
     /**
      * Get a list of existing tables with metadata.
      */
-    async list(options?: RequestOptions): Promise<Array<components.Table>> {
+    async list(options?: RequestOptions): Promise<errors.BadRequest> {
         const path$ = this.templateURLComponent("/api/v1/config/table")();
 
         const query$ = "";
@@ -82,15 +81,25 @@ export class Tables extends ClientSDK {
 
         const response = await this.do$(request$, {
             context,
-            errorCodes: ["4XX", "5XX"],
+            errorCodes: ["401", "403", "404", "429", "4XX", "500", "503", "5XX"],
             retryConfig: options?.retries || this.options$.retryConfig,
             retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
         });
 
-        const [result$] = await this.matcher<Array<components.Table>>()
-            .json(200, z.array(components.Table$inboundSchema))
+        const responseFields$ = {
+            HttpMeta: { Response: response, Request: request$ },
+        };
+
+        const [result$] = await this.matcher<errors.BadRequest>()
+            .json(200, errors.BadRequest$inboundSchema)
+            .json(401, errors.Unauthorized$inboundSchema, { err: true })
+            .json(403, errors.Forbidden$inboundSchema, { err: true })
+            .json(404, errors.NotFound$inboundSchema, { err: true })
+            .json(429, errors.TooManyRequests$inboundSchema, { err: true })
+            .json(500, errors.InternalServerError$inboundSchema, { err: true })
+            .json(503, errors.ServiceUnavailable$inboundSchema, { err: true })
             .fail(["4XX", "5XX"])
-            .match(response);
+            .match(response, { extraFields: responseFields$ });
 
         return result$;
     }
@@ -152,15 +161,26 @@ export class Tables extends ClientSDK {
 
         const response = await this.do$(request$, {
             context,
-            errorCodes: ["4XX", "5XX"],
+            errorCodes: ["400", "401", "403", "404", "429", "4XX", "500", "503", "5XX"],
             retryConfig: options?.retries || this.options$.retryConfig,
             retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
         });
 
+        const responseFields$ = {
+            HttpMeta: { Response: response, Request: request$ },
+        };
+
         const [result$] = await this.matcher<components.Table>()
             .json(200, components.Table$inboundSchema)
+            .json(400, errors.BadRequest$inboundSchema, { err: true })
+            .json(401, errors.Unauthorized$inboundSchema, { err: true })
+            .json(403, errors.Forbidden$inboundSchema, { err: true })
+            .json(404, errors.NotFound$inboundSchema, { err: true })
+            .json(429, errors.TooManyRequests$inboundSchema, { err: true })
+            .json(500, errors.InternalServerError$inboundSchema, { err: true })
+            .json(503, errors.ServiceUnavailable$inboundSchema, { err: true })
             .fail(["4XX", "5XX"])
-            .match(response);
+            .match(response, { extraFields: responseFields$ });
 
         return result$;
     }

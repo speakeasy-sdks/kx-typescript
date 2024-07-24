@@ -7,10 +7,7 @@ const kx = new Kx({
 });
 
 async function run() {
-    const result = await kx.ai.insertJson({
-        table: "myTable",
-        rows: [{}, {}],
-    });
+    const result = await kx.ai.insertRaw(new TextEncoder().encode("0x02eF1eFB84"));
 
     // Handle the result
     console.log(result);

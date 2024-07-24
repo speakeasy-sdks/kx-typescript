@@ -65,10 +65,7 @@ const kx = new Kx({
 });
 
 async function run() {
-    const result = await kx.ai.insertJson({
-        table: "myTable",
-        rows: [{}, {}],
-    });
+    const result = await kx.ai.insertRaw(new TextEncoder().encode("0x02eF1eFB84"));
 
     // Handle the result
     console.log(result);
@@ -84,10 +81,10 @@ run();
 
 ### [ai](docs/sdks/ai/README.md)
 
-* [insertJson](docs/sdks/ai/README.md#insertjson) - Insert data into a table.
 * [insertRaw](docs/sdks/ai/README.md#insertraw) - Insert data into a table.
-* [trainRaw](docs/sdks/ai/README.md#trainraw) - Train index on the table (IVF and IVFPQ only).
+* [insertJson](docs/sdks/ai/README.md#insertjson) - Insert data into a table.
 * [trainJson](docs/sdks/ai/README.md#trainjson) - Train index on the table (IVF and IVFPQ only).
+* [trainRaw](docs/sdks/ai/README.md#trainraw) - Train index on the table (IVF and IVFPQ only).
 * [vectorSearch](docs/sdks/ai/README.md#vectorsearch) - Vector similarity search
 * [hybridSearch](docs/sdks/ai/README.md#hybridsearch) - hybrid similarity search
 
@@ -158,24 +155,18 @@ const kx = new Kx({
 });
 
 async function run() {
-    const result = await kx.ai.insertJson(
-        {
-            table: "myTable",
-            rows: [{}, {}],
-        },
-        {
-            retries: {
-                strategy: "backoff",
-                backoff: {
-                    initialInterval: 1,
-                    maxInterval: 50,
-                    exponent: 1.1,
-                    maxElapsedTime: 100,
-                },
-                retryConnectionErrors: false,
+    const result = await kx.ai.insertRaw(new TextEncoder().encode("0x02eF1eFB84"), {
+        retries: {
+            strategy: "backoff",
+            backoff: {
+                initialInterval: 1,
+                maxInterval: 50,
+                exponent: 1.1,
+                maxElapsedTime: 100,
             },
-        }
-    );
+            retryConnectionErrors: false,
+        },
+    });
 
     // Handle the result
     console.log(result);
@@ -204,10 +195,7 @@ const kx = new Kx({
 });
 
 async function run() {
-    const result = await kx.ai.insertJson({
-        table: "myTable",
-        rows: [{}, {}],
-    });
+    const result = await kx.ai.insertRaw(new TextEncoder().encode("0x02eF1eFB84"));
 
     // Handle the result
     console.log(result);
@@ -223,11 +211,16 @@ run();
 
 All SDK methods return a response object or throw an error. If Error objects are specified in your OpenAPI Spec, the SDK will throw the appropriate Error type.
 
-| Error Object                                | Status Code                                 | Content Type                                |
-| ------------------------------------------- | ------------------------------------------- | ------------------------------------------- |
-| errors.KdbAiTableDeleteResponseBody         | 400                                         | application/json                            |
-| errors.KdbAiTableDeleteAiTablesResponseBody | 404                                         | application/json                            |
-| errors.SDKError                             | 4xx-5xx                                     | */*                                         |
+| Error Object               | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| errors.BadRequest          | 400                        | application/json           |
+| errors.Unauthorized        | 401                        | application/json           |
+| errors.Forbidden           | 403                        | application/json           |
+| errors.NotFound            | 404                        | application/json           |
+| errors.TooManyRequests     | 429                        | application/json           |
+| errors.InternalServerError | 500                        | application/json           |
+| errors.ServiceUnavailable  | 503                        | application/json           |
+| errors.SDKError            | 4xx-5xx                    | */*                        |
 
 Validation errors can also occur when either method arguments or data returned from the server do not match the expected format. The `SDKValidationError` that is thrown as a result will capture the raw value that failed validation in an attribute called `rawValue`. Additionally, a `pretty()` method is available on this error that can be used to log a nicely formatted string since validation errors can list many issues and the plain error string may be difficult read when debugging. 
 
@@ -243,7 +236,7 @@ const kx = new Kx({
 async function run() {
     let result;
     try {
-        result = await kx.ai.tables.delete("<value>");
+        result = await kx.ai.insertRaw(new TextEncoder().encode("0x02eF1eFB84"));
     } catch (err) {
         switch (true) {
             case err instanceof SDKValidationError: {
@@ -253,11 +246,31 @@ async function run() {
                 console.error(err.rawValue);
                 return;
             }
-            case err instanceof errors.KdbAiTableDeleteResponseBody: {
+            case err instanceof errors.BadRequest: {
                 console.error(err); // handle exception
                 return;
             }
-            case err instanceof errors.KdbAiTableDeleteAiTablesResponseBody: {
+            case err instanceof errors.Unauthorized: {
+                console.error(err); // handle exception
+                return;
+            }
+            case err instanceof errors.Forbidden: {
+                console.error(err); // handle exception
+                return;
+            }
+            case err instanceof errors.NotFound: {
+                console.error(err); // handle exception
+                return;
+            }
+            case err instanceof errors.TooManyRequests: {
+                console.error(err); // handle exception
+                return;
+            }
+            case err instanceof errors.InternalServerError: {
+                console.error(err); // handle exception
+                return;
+            }
+            case err instanceof errors.ServiceUnavailable: {
                 console.error(err); // handle exception
                 return;
             }
@@ -296,10 +309,7 @@ const kx = new Kx({
 });
 
 async function run() {
-    const result = await kx.ai.insertJson({
-        table: "myTable",
-        rows: [{}, {}],
-    });
+    const result = await kx.ai.insertRaw(new TextEncoder().encode("0x02eF1eFB84"));
 
     // Handle the result
     console.log(result);
@@ -328,10 +338,7 @@ const kx = new Kx({
 });
 
 async function run() {
-    const result = await kx.ai.insertJson({
-        table: "myTable",
-        rows: [{}, {}],
-    });
+    const result = await kx.ai.insertRaw(new TextEncoder().encode("0x02eF1eFB84"));
 
     // Handle the result
     console.log(result);
@@ -411,10 +418,7 @@ const kx = new Kx({
 });
 
 async function run() {
-    const result = await kx.ai.insertJson({
-        table: "myTable",
-        rows: [{}, {}],
-    });
+    const result = await kx.ai.insertRaw(new TextEncoder().encode("0x02eF1eFB84"));
 
     // Handle the result
     console.log(result);
