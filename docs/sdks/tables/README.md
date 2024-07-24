@@ -42,7 +42,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.Trade[]](../../models/.md)\>**
+**Promise\<[components.Table[]](../../models/.md)\>**
 ### Errors
 
 | Error Object    | Status Code     | Content Type    |
@@ -84,7 +84,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.KdbAiTableMetaResponseBody](../../models/operations/kdbaitablemetaresponsebody.md)\>**
+**Promise\<[components.Table](../../models/components/table.md)\>**
 ### Errors
 
 | Error Object    | Status Code     | Content Type    |
@@ -126,7 +126,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.KdbAiTableDeleteResponseBody](../../models/operations/kdbaitabledeleteresponsebody.md)\>**
+**Promise\<[components.SuccessResponse](../../models/components/successresponse.md)\>**
 ### Errors
 
 | Error Object                                | Status Code                                 | Content Type                                |
@@ -150,16 +150,11 @@ const kx = new Kx({
 
 async function run() {
   const result = await kx.ai.tables.create("<value>", {
-    description: "Multi-tiered human-resource model",
     type: "splayed",
     blockSize: 10000,
     prtnCol: "realTime",
-    sortColsOrd: [
-      "sym",
-    ],
-    sortColsDisk: [
-      "sym",
-    ],
+    sortColsOrd: "sym",
+    sortColsDisk: "sym",
     columns: [
       {
         name: "time",
@@ -209,7 +204,7 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `name`                                                                                                                                                                         | *string*                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                             | N/A                                                                                                                                                                            |
-| `requestBody`                                                                                                                                                                  | [operations.KdbAiTableCreateRequestBody](../../models/operations/kdbaitablecreaterequestbody.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | An object with table metadata and list of columns                                                                                                                              |
+| `table`                                                                                                                                                                        | [components.Table](../../models/components/table.md)                                                                                                                           | :heavy_check_mark:                                                                                                                                                             | An object with table metadata and list of columns                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -217,7 +212,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.KdbAiTableCreateResponseBody](../../models/operations/kdbaitablecreateresponsebody.md)\>**
+**Promise\<[components.SuccessResponse](../../models/components/successresponse.md)\>**
 ### Errors
 
 | Error Object                        | Status Code                         | Content Type                        |

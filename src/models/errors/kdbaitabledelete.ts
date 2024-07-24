@@ -7,12 +7,16 @@ import * as z from "zod";
 /**
  * Table not found
  */
-export type KdbAiTableDeleteAiTablesResponseBodyData = {};
+export type KdbAiTableDeleteAiTablesResponseBodyData = {
+    error?: string | undefined;
+};
 
 /**
  * Table not found
  */
 export class KdbAiTableDeleteAiTablesResponseBody extends Error {
+    error?: string | undefined;
+
     /** The original data that was passed to this error instance. */
     data$: KdbAiTableDeleteAiTablesResponseBodyData;
 
@@ -24,6 +28,10 @@ export class KdbAiTableDeleteAiTablesResponseBody extends Error {
         super(message);
         this.data$ = err;
 
+        if (err.error != null) {
+            this.error = err.error;
+        }
+
         this.name = "KdbAiTableDeleteAiTablesResponseBody";
     }
 }
@@ -31,12 +39,16 @@ export class KdbAiTableDeleteAiTablesResponseBody extends Error {
 /**
  * Failed to clean up data from table.
  */
-export type KdbAiTableDeleteResponseBodyData = {};
+export type KdbAiTableDeleteResponseBodyData = {
+    error?: string | undefined;
+};
 
 /**
  * Failed to clean up data from table.
  */
 export class KdbAiTableDeleteResponseBody extends Error {
+    error?: string | undefined;
+
     /** The original data that was passed to this error instance. */
     data$: KdbAiTableDeleteResponseBodyData;
 
@@ -48,6 +60,10 @@ export class KdbAiTableDeleteResponseBody extends Error {
         super(message);
         this.data$ = err;
 
+        if (err.error != null) {
+            this.error = err.error;
+        }
+
         this.name = "KdbAiTableDeleteResponseBody";
     }
 }
@@ -57,19 +73,32 @@ export const KdbAiTableDeleteAiTablesResponseBody$inboundSchema: z.ZodType<
     KdbAiTableDeleteAiTablesResponseBody,
     z.ZodTypeDef,
     unknown
-> = z.object({}).transform(() => {
-    return new KdbAiTableDeleteAiTablesResponseBody();
-});
+> = z
+    .object({
+        error: z.string().optional(),
+    })
+    .transform((v) => {
+        return new KdbAiTableDeleteAiTablesResponseBody(v);
+    });
 
 /** @internal */
-export type KdbAiTableDeleteAiTablesResponseBody$Outbound = {};
+export type KdbAiTableDeleteAiTablesResponseBody$Outbound = {
+    error?: string | undefined;
+};
 
 /** @internal */
 export const KdbAiTableDeleteAiTablesResponseBody$outboundSchema: z.ZodType<
     KdbAiTableDeleteAiTablesResponseBody$Outbound,
     z.ZodTypeDef,
     KdbAiTableDeleteAiTablesResponseBody
-> = z.instanceof(KdbAiTableDeleteAiTablesResponseBody).transform((v) => v.data$);
+> = z
+    .instanceof(KdbAiTableDeleteAiTablesResponseBody)
+    .transform((v) => v.data$)
+    .pipe(
+        z.object({
+            error: z.string().optional(),
+        })
+    );
 
 /**
  * @internal
@@ -89,19 +118,32 @@ export const KdbAiTableDeleteResponseBody$inboundSchema: z.ZodType<
     KdbAiTableDeleteResponseBody,
     z.ZodTypeDef,
     unknown
-> = z.object({}).transform(() => {
-    return new KdbAiTableDeleteResponseBody();
-});
+> = z
+    .object({
+        error: z.string().optional(),
+    })
+    .transform((v) => {
+        return new KdbAiTableDeleteResponseBody(v);
+    });
 
 /** @internal */
-export type KdbAiTableDeleteResponseBody$Outbound = {};
+export type KdbAiTableDeleteResponseBody$Outbound = {
+    error?: string | undefined;
+};
 
 /** @internal */
 export const KdbAiTableDeleteResponseBody$outboundSchema: z.ZodType<
     KdbAiTableDeleteResponseBody$Outbound,
     z.ZodTypeDef,
     KdbAiTableDeleteResponseBody
-> = z.instanceof(KdbAiTableDeleteResponseBody).transform((v) => v.data$);
+> = z
+    .instanceof(KdbAiTableDeleteResponseBody)
+    .transform((v) => v.data$)
+    .pipe(
+        z.object({
+            error: z.string().optional(),
+        })
+    );
 
 /**
  * @internal

@@ -14,3 +14,5 @@ export * from "./rcheader.js";
 export * from "./rcresponse.js";
 export * from "./searchquery.js";
 export * from "./security.js";
+export * from "./successresponse.js";
+export * from "./table.js";

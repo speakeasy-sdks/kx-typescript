@@ -70,22 +70,25 @@ export class Ai extends ClientSDK {
      * @remarks
      * Request body is a tuple of (target table name, data table) serialized into a PyKX octet stream with pykx._wrappers._to_bytes(6, pykx.toq([table, data]), 1)[1])
      */
-    async insertRaw(request: Uint8Array | string, options?: RequestOptions): Promise<string> {
+    async insertJson(
+        request: components.InsertRequestBody,
+        options?: RequestOptions
+    ): Promise<string> {
         const input$ = request;
 
         const payload$ = schemas$.parse(
             input$,
-            (value$) => b64$.zodOutbound.parse(value$),
+            (value$) => components.InsertRequestBody$outboundSchema.parse(value$),
             "Input validation failed"
         );
-        const body$ = payload$;
+        const body$ = encodeJSON$("body", payload$, { explode: true });
 
         const path$ = this.templateURLComponent("/api/v1/insert")();
 
         const query$ = "";
 
         const headers$ = new Headers({
-            "Content-Type": "application/octet-stream",
+            "Content-Type": "application/json",
             Accept: "text/plain",
         });
 
@@ -98,7 +101,7 @@ export class Ai extends ClientSDK {
             security$ = {};
         }
         const context = {
-            operationID: "kdb.ai.insert_raw",
+            operationID: "kdb.ai.insert_json",
             oAuth2Scopes: [],
             securitySource: this.options$.apiKeyAuth,
         };
@@ -139,25 +142,22 @@ export class Ai extends ClientSDK {
      * @remarks
      * Request body is a tuple of (target table name, data table) serialized into a PyKX octet stream with pykx._wrappers._to_bytes(6, pykx.toq([table, data]), 1)[1])
      */
-    async insertJson(
-        request: components.InsertRequestBody,
-        options?: RequestOptions
-    ): Promise<string> {
+    async insertRaw(request: Uint8Array | string, options?: RequestOptions): Promise<string> {
         const input$ = request;
 
         const payload$ = schemas$.parse(
             input$,
-            (value$) => components.InsertRequestBody$outboundSchema.parse(value$),
+            (value$) => b64$.zodOutbound.parse(value$),
             "Input validation failed"
         );
-        const body$ = encodeJSON$("body", payload$, { explode: true });
+        const body$ = payload$;
 
         const path$ = this.templateURLComponent("/api/v1/insert")();
 
         const query$ = "";
 
         const headers$ = new Headers({
-            "Content-Type": "application/json",
+            "Content-Type": "application/octet-stream",
             Accept: "text/plain",
         });
 
@@ -170,7 +170,7 @@ export class Ai extends ClientSDK {
             security$ = {};
         }
         const context = {
-            operationID: "kdb.ai.insert_json",
+            operationID: "kdb.ai.insert_raw",
             oAuth2Scopes: [],
             securitySource: this.options$.apiKeyAuth,
         };

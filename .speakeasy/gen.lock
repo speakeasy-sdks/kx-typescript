@@ -1,12 +1,14 @@
 lockVersion: 2.0.0
 id: 6f0105da-a1cc-400b-9019-2c40814e5b23
 management:
-  docChecksum: b2dad817770054f6086632ae8ac05e3e
+  docChecksum: 753427712ea4c2cb85b0f8aa5bfc04ef
   docVersion: 1.0.0
   speakeasyVersion: 1.345.4
   generationVersion: 2.378.3
-  releaseVersion: 0.1.1
-  configChecksum: a8412361e1f6cb28afd71d59c1deb4e5
+  releaseVersion: 0.1.2
+  configChecksum: 5131b64acf1ca22066a34fd3d2f91ecd
+  repoURL: https://github.com/speakeasy-sdks/kx-typescript.git
+  installationURL: https://github.com/speakeasy-sdks/kx-typescript
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -65,16 +67,17 @@ generatedFiles:
   - src/models/components/rcheader.ts
   - src/models/components/searchquery.ts
   - src/models/components/hybridsearchquery.ts
+  - src/models/components/table.ts
   - src/models/components/flatindex.ts
   - src/models/components/distancemetric.ts
   - src/models/components/hnswindex.ts
   - src/models/components/ivfindex.ts
   - src/models/components/ivfpqindex.ts
+  - src/models/components/successresponse.ts
   - src/models/components/canonicalquery.ts
   - src/models/components/security.ts
   - src/models/operations/kdbaitrainraw.ts
   - src/models/operations/kdbaitrainjson.ts
-  - src/models/operations/kdbaitablelist.ts
   - src/models/operations/kdbaitablemeta.ts
   - src/models/operations/kdbaitabledelete.ts
   - src/models/operations/kdbaitablecreate.ts
@@ -94,6 +97,9 @@ generatedFiles:
   - docs/models/components/denseindexoptions.md
   - docs/models/components/sparseindexoptions.md
   - docs/models/components/hybridsearchquery.md
+  - docs/models/components/vectorindex.md
+  - docs/models/components/columns.md
+  - docs/models/components/table.md
   - docs/models/components/type.md
   - docs/models/components/flatindex.md
   - docs/models/components/distancemetric.md
@@ -103,22 +109,14 @@ generatedFiles:
   - docs/models/components/ivfindex.md
   - docs/models/components/ivfpqindextype.md
   - docs/models/components/ivfpqindex.md
+  - docs/models/components/successresponse.md
   - docs/models/components/canonicalquery.md
   - docs/models/components/security.md
   - docs/models/operations/kdbaitrainrawresponse.md
   - docs/models/operations/kdbaitrainjsonresponse.md
-  - docs/models/operations/kdbaitablelistvectorindex.md
-  - docs/models/operations/kdbaitablelistcolumns.md
-  - docs/models/operations/trade.md
   - docs/models/operations/kdbaitablemetarequest.md
-  - docs/models/operations/kdbaitablemetaresponsebody.md
   - docs/models/operations/kdbaitabledeleterequest.md
-  - docs/models/operations/kdbaitabledeleteresponsebody.md
-  - docs/models/operations/vectorindex.md
-  - docs/models/operations/columns.md
-  - docs/models/operations/kdbaitablecreaterequestbody.md
   - docs/models/operations/kdbaitablecreaterequest.md
-  - docs/models/operations/kdbaitablecreateresponsebody.md
   - docs/models/operations/kdbaiqueryresponse.md
   - docs/models/errors/kdbaitabledeleteaitablesresponsebody.md
   - docs/models/errors/kdbaitabledeleteresponsebody.md

@@ -8,11 +8,6 @@ export type KdbAiTableMetaRequest = {
     name: string;
 };
 
-/**
- * OK
- */
-export type KdbAiTableMetaResponseBody = {};
-
 /** @internal */
 export const KdbAiTableMetaRequest$inboundSchema: z.ZodType<
     KdbAiTableMetaRequest,
@@ -47,34 +42,4 @@ export namespace KdbAiTableMetaRequest$ {
     export const outboundSchema = KdbAiTableMetaRequest$outboundSchema;
     /** @deprecated use `KdbAiTableMetaRequest$Outbound` instead. */
     export type Outbound = KdbAiTableMetaRequest$Outbound;
-}
-
-/** @internal */
-export const KdbAiTableMetaResponseBody$inboundSchema: z.ZodType<
-    KdbAiTableMetaResponseBody,
-    z.ZodTypeDef,
-    unknown
-> = z.object({});
-
-/** @internal */
-export type KdbAiTableMetaResponseBody$Outbound = {};
-
-/** @internal */
-export const KdbAiTableMetaResponseBody$outboundSchema: z.ZodType<
-    KdbAiTableMetaResponseBody$Outbound,
-    z.ZodTypeDef,
-    KdbAiTableMetaResponseBody
-> = z.object({});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace KdbAiTableMetaResponseBody$ {
-    /** @deprecated use `KdbAiTableMetaResponseBody$inboundSchema` instead. */
-    export const inboundSchema = KdbAiTableMetaResponseBody$inboundSchema;
-    /** @deprecated use `KdbAiTableMetaResponseBody$outboundSchema` instead. */
-    export const outboundSchema = KdbAiTableMetaResponseBody$outboundSchema;
-    /** @deprecated use `KdbAiTableMetaResponseBody$Outbound` instead. */
-    export type Outbound = KdbAiTableMetaResponseBody$Outbound;
 }

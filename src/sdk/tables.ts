@@ -8,6 +8,7 @@ import { encodeJSON as encodeJSON$, encodeSimple as encodeSimple$ } from "../lib
 import { HTTPClient } from "../lib/http.js";
 import * as schemas$ from "../lib/schemas.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
+import * as components from "../models/components/index.js";
 import * as errors from "../models/errors/index.js";
 import * as operations from "../models/operations/index.js";
 import * as z from "zod";
@@ -42,7 +43,7 @@ export class Tables extends ClientSDK {
     /**
      * Get a list of existing tables with metadata.
      */
-    async list(options?: RequestOptions): Promise<Array<operations.Trade>> {
+    async list(options?: RequestOptions): Promise<Array<components.Table>> {
         const path$ = this.templateURLComponent("/api/v1/config/table")();
 
         const query$ = "";
@@ -86,8 +87,8 @@ export class Tables extends ClientSDK {
             retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
         });
 
-        const [result$] = await this.matcher<Array<operations.Trade>>()
-            .json(200, z.array(operations.Trade$inboundSchema))
+        const [result$] = await this.matcher<Array<components.Table>>()
+            .json(200, z.array(components.Table$inboundSchema))
             .fail(["4XX", "5XX"])
             .match(response);
 
@@ -97,10 +98,7 @@ export class Tables extends ClientSDK {
     /**
      * Get table metadata.
      */
-    async getMeta(
-        name: string,
-        options?: RequestOptions
-    ): Promise<operations.KdbAiTableMetaResponseBody> {
+    async getMeta(name: string, options?: RequestOptions): Promise<components.Table> {
         const input$: operations.KdbAiTableMetaRequest = {
             name: name,
         };
@@ -159,8 +157,8 @@ export class Tables extends ClientSDK {
             retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
         });
 
-        const [result$] = await this.matcher<operations.KdbAiTableMetaResponseBody>()
-            .json(200, operations.KdbAiTableMetaResponseBody$inboundSchema)
+        const [result$] = await this.matcher<components.Table>()
+            .json(200, components.Table$inboundSchema)
             .fail(["4XX", "5XX"])
             .match(response);
 
@@ -170,10 +168,7 @@ export class Tables extends ClientSDK {
     /**
      * Drop table.
      */
-    async delete(
-        name: string,
-        options?: RequestOptions
-    ): Promise<operations.KdbAiTableDeleteResponseBody> {
+    async delete(name: string, options?: RequestOptions): Promise<components.SuccessResponse> {
         const input$: operations.KdbAiTableDeleteRequest = {
             name: name,
         };
@@ -236,8 +231,8 @@ export class Tables extends ClientSDK {
             HttpMeta: { Response: response, Request: request$ },
         };
 
-        const [result$] = await this.matcher<operations.KdbAiTableDeleteResponseBody>()
-            .json(200, operations.KdbAiTableDeleteResponseBody$inboundSchema)
+        const [result$] = await this.matcher<components.SuccessResponse>()
+            .json(200, components.SuccessResponse$inboundSchema)
             .json(400, errors.KdbAiTableDeleteResponseBody$inboundSchema, { err: true })
             .json(404, errors.KdbAiTableDeleteAiTablesResponseBody$inboundSchema, { err: true })
             .fail(["4XX", "5XX"])
@@ -251,12 +246,12 @@ export class Tables extends ClientSDK {
      */
     async create(
         name: string,
-        requestBody: operations.KdbAiTableCreateRequestBody,
+        table: components.Table,
         options?: RequestOptions
-    ): Promise<operations.KdbAiTableCreateResponseBody> {
+    ): Promise<components.SuccessResponse> {
         const input$: operations.KdbAiTableCreateRequest = {
             name: name,
-            requestBody: requestBody,
+            table: table,
         };
 
         const payload$ = schemas$.parse(
@@ -264,7 +259,7 @@ export class Tables extends ClientSDK {
             (value$) => operations.KdbAiTableCreateRequest$outboundSchema.parse(value$),
             "Input validation failed"
         );
-        const body$ = encodeJSON$("body", payload$.RequestBody, { explode: true });
+        const body$ = encodeJSON$("body", payload$.Table, { explode: true });
 
         const pathParams$ = {
             name: encodeSimple$("name", payload$.name, { explode: false, charEncoding: "percent" }),
@@ -318,8 +313,8 @@ export class Tables extends ClientSDK {
             HttpMeta: { Response: response, Request: request$ },
         };
 
-        const [result$] = await this.matcher<operations.KdbAiTableCreateResponseBody>()
-            .json(200, operations.KdbAiTableCreateResponseBody$inboundSchema)
+        const [result$] = await this.matcher<components.SuccessResponse>()
+            .json(200, components.SuccessResponse$inboundSchema)
             .json(400, errors.KdbAiTableCreateResponseBody$inboundSchema, { err: true })
             .fail(["4XX", "5XX"])
             .match(response, { extraFields: responseFields$ });
