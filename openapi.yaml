@@ -31,119 +31,7 @@ paths:
                 title: trades
                 type: array
                 items:
-                  type: object
-                  title: trade
-                  properties:
-                    type:
-                      type: string
-                    blockSize:
-                      type: integer
-                    prtnCol:
-                      type: string
-                    sortColsOrd:
-                      type: string
-                    sortColsDisk:
-                      type: string
-                    columns:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          name:
-                            type: string
-                          description:
-                            type: string
-                          type:
-                            type: string
-                          attrMem:
-                            type: string
-                          attrDisk:
-                            type: string
-                          attrOrd:
-                            type: string
-                          vectorIndex:
-                            oneOf:
-                            - $ref: '#/components/schemas/FlatIndex'
-                            - $ref: '#/components/schemas/HNSWIndex'
-                            - $ref: '#/components/schemas/IVFIndex'
-                            - $ref: '#/components/schemas/IVFPQIndex'
-              example:
-                {
-                    "trade": {
-                        "type": "splayed",
-                        "blockSize": 10000,
-                        "prtnCol": "realTime",
-                        "sortColsOrd": "sym",
-                        "sortColsDisk": "sym",
-                        "columns": [{
-                                "name": "time",
-                                "description": "Time",
-                                "type": "timespan"
-                            }, {
-                                "name": "sym",
-                                "description": "Symbol name",
-                                "type": "symbol",
-                                "attrMem": "grouped",
-                                "attrDisk": "parted",
-                                "attrOrd": "parted"
-                            }, {
-                                "name": "realTime",
-                                "description": "Real timestamp",
-                                "type": "timestamp"
-                            }, {
-                                "name": "price",
-                                "description": "Trade price",
-                                "type": "reals",
-                                "vectorIndex": {
-                                    "type": "flat",
-                                    "metric": "L2",
-                                    "dims": 10
-                                }
-                            }, {
-                                "name": "size",
-                                "description": "Trade size",
-                                "type": "long"
-                            }
-                        ]
-                    },
-                    "trade2": {
-                        "type": "splayed",
-                        "blockSize": 10000,
-                        "prtnCol": "realTime",
-                        "sortColsOrd": "sym",
-                        "sortColsDisk": "sym",
-                        "columns": [{
-                                "name": "time",
-                                "description": "Time",
-                                "type": "timespan"
-                            }, {
-                                "name": "sym",
-                                "description": "Symbol name",
-                                "type": "symbol",
-                                "attrMem": "grouped",
-                                "attrDisk": "parted",
-                                "attrOrd": "parted"
-                            }, {
-                                "name": "realTime",
-                                "description": "Real timestamp",
-                                "type": "timestamp"
-                            }, {
-                                "name": "price",
-                                "description": "Trade price",
-                                "type": "reals",
-                                "vectorIndex": {
-                                    "type": "flat",
-                                    "metric": "L2",
-                                    "dims": 10
-                                }
-                            }, {
-                                "name": "size",
-                                "description": "Trade size",
-                                "type": "long"
-                            }
-                        ]
-                    }
-                }
+                  $ref: '#/components/schemas/Table'
   /api/v1/config/table/{name}:
     get:
       operationId: kdb.ai.table.meta
@@ -164,45 +52,46 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-              example:
-                {
-                    "type": "splayed",
-                    "blockSize": 10000,
-                    "prtnCol": "realTime",
-                    "sortColsOrd": "sym",
-                    "sortColsDisk": "sym",
-                    "columns": [{
-                            "name": "time",
-                            "description": "Time",
-                            "type": "timespan"
-                        }, {
-                            "name": "sym",
-                            "description": "Symbol name",
-                            "type": "symbol",
-                            "attrMem": "grouped",
-                            "attrDisk": "parted",
-                            "attrOrd": "parted"
-                        }, {
-                            "name": "realTime",
-                            "description": "Real timestamp",
-                            "type": "timestamp"
-                        }, {
-                            "name": "price",
-                            "description": "Trade price",
-                            "type": "reals",
-                            "vectorIndex": {
-                                "type": "flat",
-                                "metric": "L2",
-                                "dims": 10
-                            }
-                        }, {
-                            "name": "size",
-                            "description": "Trade size",
-                            "type": "long"
-                        }
-                    ]
+                $ref: '#/components/schemas/Table'
+      example:
+        {
+            "type": "splayed",
+            "blockSize": 10000,
+            "prtnCol": "realTime",
+            "sortColsOrd": "sym",
+            "sortColsDisk": "sym",
+            "columns": [{
+                    "name": "time",
+                    "description": "Time",
+                    "type": "timespan"
+                }, {
+                    "name": "sym",
+                    "description": "Symbol name",
+                    "type": "symbol",
+                    "attrMem": "grouped",
+                    "attrDisk": "parted",
+                    "attrOrd": "parted"
+                }, {
+                    "name": "realTime",
+                    "description": "Real timestamp",
+                    "type": "timestamp"
+                }, {
+                    "name": "price",
+                    "description": "Trade price",
+                    "type": "reals",
+                    "vectorIndex": {
+                        "type": "flat",
+                        "metric": "L2",
+                        "dims": 10
+                    }
+                }, {
+                    "name": "size",
+                    "description": "Trade size",
+                    "type": "long"
                 }
+            ]
+        }
+              
     delete:
       operationId: kdb.ai.table.delete
       summary: Drop table.
@@ -222,7 +111,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/SuccessResponse'
               example: {"message": "success"}
         '400':
           description: Failed to clean up data from table.
@@ -230,6 +119,9 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  error:
+                    type: string
               example: {"error":"Failed to clean up data from table, table not removed"}
         '404':
           description: Table not found
@@ -237,6 +129,9 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  error:
+                    type: string
               example: {"error":"Table trade not found"}
     post:
       operationId: kdb.ai.table.create
@@ -257,67 +152,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                description:
-                  type: string
-                  description: A textual description for the table. This can be used to provide an overview of the data collected in the current table.
-                type:
-                  type: string
-                  description: The type of the table is how the table is managed on disk. For time based tables, use partitioned. For supplementary data, use splayed. Note that at least one of your tables must be partitioned.
-                blockSize:
-                  type: integer
-                  description: This value indicates when data should be written to disk. After this many records are received, data is written to disk. Writing more frequently increases disk IO but will use less memory. If omitted, the default value is 12 million records.
-                prtnCol:
-                  type: string
-                  description: The name of the column within the table to use to partition the content. The column type it points to must be a timestamp. This value is required if the table type is set to partitioned.
-                sortColsOrd:
-                  type: array
-                  items:
-                    type: string
-                  description: A list of columns to use for sorting columns in an ordinal partitioned tier. Setting this value will sort data as it migrates into ordinal partitions. If you want data to also have the sorted attribute, set attrOrd to sorted. This typically corresponds to the data sort of the IDB tier.
-                sortColsDisk:
-                  type: array
-                  items:
-                    type: string
-                  description: A list of columns to use for sorting columns in a normal disk tier. Settings this value will sort data as it is migrated into disk partitions. If you want data to also have the sorted attribute, set attrDisk to sorted. This typically corresponds to the data sort of the HDB tier.
-                columns:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                        description: The name of the column in the table. The name must be unique within a single table and should be a single word that represents the purpose of the data within the column. This name must conform to kdb+ naming restrictions and should not use any reserved kdb+ primitives.
-                      description:
-                        type: string
-                        description: A textual description of the column for documentation purposes.
-                      type:
-                        type: string
-                        description: The type of the column.
-                      attrMem:
-                        type: string
-                        description: Column attributes to apply when the table is in memory. This typically only applies to the RDB tier.
-                      attrDisk:
-                        type: string
-                        description: Column attributes to apply when the table is partitioned on disk. This typically only applies to the HDB tier.
-                      attrOrd:
-                        type: string
-                        description: Column attributes to apply when the table is ordinal partitioned. This typically only applies to the IDB tier.
-                      vectorIndex:
-                        oneOf:
-                        - $ref: '#/components/schemas/FlatIndex'
-                        - $ref: '#/components/schemas/HNSWIndex'
-                        - $ref: '#/components/schemas/IVFIndex'
-                        - $ref: '#/components/schemas/IVFPQIndex'
-                    required:
-                      - name
-                      - type
-              required:
-                - description
-                - type
-                - blockSize
-                - columns
+              $ref: '#/components/schemas/Table'
             example:
               {
                 "type": "splayed",
@@ -367,7 +202,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/SuccessResponse'
               example: {"message": "success"}
         '400':
           description: \'embedding\' is provided but \'vectorIndex\' is not provided.
@@ -430,7 +265,7 @@ paths:
           content:
             text/plain:
               schema:
-                type: string
+                $ref: '#/components/schemas/SuccessResponse'
               example: Insert successful.
   /api/v1/train:
     post:
@@ -459,10 +294,7 @@ paths:
           content:
             text/plain:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
+                $ref: '#/components/schemas/SuccessResponse'
               example: {"message": "Index training complete, XXX extra rows discarded"}
         '202':
           description: Some records are cached for training
@@ -779,8 +611,7 @@ paths:
           content:
             text/plain:
               schema:
-                description: OK
-                type: string
+                $ref: '#/components/schemas/SuccessResponse'
         '400':
           description: SM is not listening on port
           content:
@@ -816,8 +647,15 @@ paths:
           content:
             text/plain:
               schema:
-                description: OK
-                type: string
+                title: 'APIVersion'
+                type: object
+                properties:
+                  serverVersion:
+                    type: string
+                  clientMinVersion:
+                    type: string
+                  clientMaxVersion:
+                    type: string
               example:
                 {
                   "serverVersion": "KDBAI_DB_VERSION:-",
@@ -835,6 +673,47 @@ components:
       in: header
       name: X-Api-Key
   schemas:
+    SuccessResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    Table:
+      type: object
+      properties:
+        type:
+          type: string
+        blockSize:
+          type: integer
+        prtnCol:
+          type: string
+        sortColsOrd:
+          type: string
+        sortColsDisk:
+          type: string
+        columns:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              type:
+                type: string
+              attrMem:
+                type: string
+              attrDisk:
+                type: string
+              attrOrd:
+                type: string
+              vectorIndex:
+                oneOf:
+                - $ref: '#/components/schemas/FlatIndex'
+                - $ref: '#/components/schemas/HNSWIndex'
+                - $ref: '#/components/schemas/IVFIndex'
+                - $ref: '#/components/schemas/IVFPQIndex'
     Symbol:
       type: string
       x-kx-type: "-11h"
