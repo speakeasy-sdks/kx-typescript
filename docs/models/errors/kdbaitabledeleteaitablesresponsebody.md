@@ -5,5 +5,6 @@ Table not found
 
 ## Fields
 
-| Field       | Type        | Required    | Description |
-| ----------- | ----------- | ----------- | ----------- |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `error`            | *string*           | :heavy_minus_sign: | N/A                |

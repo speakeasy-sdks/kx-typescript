@@ -8,11 +8,6 @@ export type KdbAiTableDeleteRequest = {
     name: string;
 };
 
-/**
- * OK
- */
-export type KdbAiTableDeleteResponseBody = {};
-
 /** @internal */
 export const KdbAiTableDeleteRequest$inboundSchema: z.ZodType<
     KdbAiTableDeleteRequest,
@@ -47,34 +42,4 @@ export namespace KdbAiTableDeleteRequest$ {
     export const outboundSchema = KdbAiTableDeleteRequest$outboundSchema;
     /** @deprecated use `KdbAiTableDeleteRequest$Outbound` instead. */
     export type Outbound = KdbAiTableDeleteRequest$Outbound;
-}
-
-/** @internal */
-export const KdbAiTableDeleteResponseBody$inboundSchema: z.ZodType<
-    KdbAiTableDeleteResponseBody,
-    z.ZodTypeDef,
-    unknown
-> = z.object({});
-
-/** @internal */
-export type KdbAiTableDeleteResponseBody$Outbound = {};
-
-/** @internal */
-export const KdbAiTableDeleteResponseBody$outboundSchema: z.ZodType<
-    KdbAiTableDeleteResponseBody$Outbound,
-    z.ZodTypeDef,
-    KdbAiTableDeleteResponseBody
-> = z.object({});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace KdbAiTableDeleteResponseBody$ {
-    /** @deprecated use `KdbAiTableDeleteResponseBody$inboundSchema` instead. */
-    export const inboundSchema = KdbAiTableDeleteResponseBody$inboundSchema;
-    /** @deprecated use `KdbAiTableDeleteResponseBody$outboundSchema` instead. */
-    export const outboundSchema = KdbAiTableDeleteResponseBody$outboundSchema;
-    /** @deprecated use `KdbAiTableDeleteResponseBody$Outbound` instead. */
-    export type Outbound = KdbAiTableDeleteResponseBody$Outbound;
 }

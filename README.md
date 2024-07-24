@@ -66,7 +66,10 @@ const kx = new Kx({
 });
 
 async function run() {
-    const result = await kx.ai.insertRaw(new TextEncoder().encode("0x02eF1eFB84"));
+    const result = await kx.ai.insertJson({
+        table: "myTable",
+        rows: [{}, {}],
+    });
 
     // Handle the result
     console.log(result);
@@ -82,8 +85,8 @@ run();
 
 ### [ai](docs/sdks/ai/README.md)
 
-* [insertRaw](docs/sdks/ai/README.md#insertraw) - Insert data into a table.
 * [insertJson](docs/sdks/ai/README.md#insertjson) - Insert data into a table.
+* [insertRaw](docs/sdks/ai/README.md#insertraw) - Insert data into a table.
 * [trainRaw](docs/sdks/ai/README.md#trainraw) - Train index on the table (IVF and IVFPQ only).
 * [trainJson](docs/sdks/ai/README.md#trainjson) - Train index on the table (IVF and IVFPQ only).
 * [vectorSearch](docs/sdks/ai/README.md#vectorsearch) - Vector similarity search
@@ -156,18 +159,24 @@ const kx = new Kx({
 });
 
 async function run() {
-    const result = await kx.ai.insertRaw(new TextEncoder().encode("0x02eF1eFB84"), {
-        retries: {
-            strategy: "backoff",
-            backoff: {
-                initialInterval: 1,
-                maxInterval: 50,
-                exponent: 1.1,
-                maxElapsedTime: 100,
-            },
-            retryConnectionErrors: false,
+    const result = await kx.ai.insertJson(
+        {
+            table: "myTable",
+            rows: [{}, {}],
         },
-    });
+        {
+            retries: {
+                strategy: "backoff",
+                backoff: {
+                    initialInterval: 1,
+                    maxInterval: 50,
+                    exponent: 1.1,
+                    maxElapsedTime: 100,
+                },
+                retryConnectionErrors: false,
+            },
+        }
+    );
 
     // Handle the result
     console.log(result);
@@ -196,7 +205,10 @@ const kx = new Kx({
 });
 
 async function run() {
-    const result = await kx.ai.insertRaw(new TextEncoder().encode("0x02eF1eFB84"));
+    const result = await kx.ai.insertJson({
+        table: "myTable",
+        rows: [{}, {}],
+    });
 
     // Handle the result
     console.log(result);
@@ -285,7 +297,10 @@ const kx = new Kx({
 });
 
 async function run() {
-    const result = await kx.ai.insertRaw(new TextEncoder().encode("0x02eF1eFB84"));
+    const result = await kx.ai.insertJson({
+        table: "myTable",
+        rows: [{}, {}],
+    });
 
     // Handle the result
     console.log(result);
@@ -314,7 +329,10 @@ const kx = new Kx({
 });
 
 async function run() {
-    const result = await kx.ai.insertRaw(new TextEncoder().encode("0x02eF1eFB84"));
+    const result = await kx.ai.insertJson({
+        table: "myTable",
+        rows: [{}, {}],
+    });
 
     // Handle the result
     console.log(result);
@@ -394,7 +412,10 @@ const kx = new Kx({
 });
 
 async function run() {
-    const result = await kx.ai.insertRaw(new TextEncoder().encode("0x02eF1eFB84"));
+    const result = await kx.ai.insertJson({
+        table: "myTable",
+        rows: [{}, {}],
+    });
 
     // Handle the result
     console.log(result);

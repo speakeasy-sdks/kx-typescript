@@ -5,7 +5,6 @@
 export * from "./kdbaiquery.js";
 export * from "./kdbaitablecreate.js";
 export * from "./kdbaitabledelete.js";
-export * from "./kdbaitablelist.js";
 export * from "./kdbaitablemeta.js";
 export * from "./kdbaitrainjson.js";
 export * from "./kdbaitrainraw.js";
