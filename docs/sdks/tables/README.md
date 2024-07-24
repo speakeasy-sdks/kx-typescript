@@ -155,14 +155,10 @@ async function run() {
     blockSize: 10000,
     prtnCol: "realTime",
     sortColsOrd: [
-      "s",
-      "y",
-      "m",
+      "sym",
     ],
     sortColsDisk: [
-      "s",
-      "y",
-      "m",
+      "sym",
     ],
     columns: [
       {

@@ -1,20 +1,21 @@
-speakeasyVersion: 1.345.1
+speakeasyVersion: 1.345.4
 sources:
     kx-OAS:
         sourceNamespace: kx-oas
-        sourceRevisionDigest: sha256:62fadc22ad0331f969c9fed27d9f3347c2bd645560c3cde432712ed89693f3ef
-        sourceBlobDigest: sha256:f93986dbb46142d558324987bed7b7407a1659dde20ac6c61046039603400c05
+        sourceRevisionDigest: sha256:a01a2b3d4929e88765f3b6e68a908716c7cd3899d426b0cc81cf34ea23b5fffc
+        sourceBlobDigest: sha256:104cff04b8c505cb6a92b8340f0cd31905d8bc168e9cf64e6af21da1e53b6dbb
         tags:
             - latest
 targets:
     kx:
         source: kx-OAS
         sourceNamespace: kx-oas
-        sourceRevisionDigest: sha256:62fadc22ad0331f969c9fed27d9f3347c2bd645560c3cde432712ed89693f3ef
-        sourceBlobDigest: sha256:f93986dbb46142d558324987bed7b7407a1659dde20ac6c61046039603400c05
-        outLocation: /Users/ndimares/speakeasy/client_sdks/kx/kx-typescript
+        sourceRevisionDigest: sha256:a01a2b3d4929e88765f3b6e68a908716c7cd3899d426b0cc81cf34ea23b5fffc
+        sourceBlobDigest: sha256:104cff04b8c505cb6a92b8340f0cd31905d8bc168e9cf64e6af21da1e53b6dbb
+        outLocation: /Users/sagar/go/src/kx-typescript
 workflow:
     workflowVersion: 1.0.0
+    speakeasyVersion: latest
     sources:
         kx-OAS:
             inputs:
@@ -22,7 +23,7 @@ workflow:
             overlays:
                 - location: ./overlay.yaml
             registry:
-                location: registry.speakeasyapi.dev/speakeasy-bar-test/speakeasy-bar-test/kx-oas
+                location: registry.speakeasyapi.dev/kx/kx/kx-oas
     targets:
         kx:
             target: typescript

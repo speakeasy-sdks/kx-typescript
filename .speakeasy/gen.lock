@@ -3,16 +3,16 @@ id: 6f0105da-a1cc-400b-9019-2c40814e5b23
 management:
   docChecksum: b2dad817770054f6086632ae8ac05e3e
   docVersion: 1.0.0
-  speakeasyVersion: 1.345.1
-  generationVersion: 2.378.1
-  releaseVersion: 0.1.0
-  configChecksum: f0cfa13ea604dc0dcfa178e08e4a7571
+  speakeasyVersion: 1.345.4
+  generationVersion: 2.378.3
+  releaseVersion: 0.1.1
+  configChecksum: a8412361e1f6cb28afd71d59c1deb4e5
 features:
   typescript:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.5
-    core: 3.11.8
+    core: 3.11.9
     defaultEnabledRetries: 0.1.0
     devContainers: 2.90.0
     downloadStreams: 0.1.1
