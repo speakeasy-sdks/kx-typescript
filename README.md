@@ -83,8 +83,8 @@ run();
 
 * [insertRaw](docs/sdks/ai/README.md#insertraw) - Insert data into a table.
 * [insertJson](docs/sdks/ai/README.md#insertjson) - Insert data into a table.
-* [trainJson](docs/sdks/ai/README.md#trainjson) - Train index on the table (IVF and IVFPQ only).
 * [trainRaw](docs/sdks/ai/README.md#trainraw) - Train index on the table (IVF and IVFPQ only).
+* [trainJson](docs/sdks/ai/README.md#trainjson) - Train index on the table (IVF and IVFPQ only).
 * [vectorSearch](docs/sdks/ai/README.md#vectorsearch) - Vector similarity search
 * [hybridSearch](docs/sdks/ai/README.md#hybridsearch) - hybrid similarity search
 

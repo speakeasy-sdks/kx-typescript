@@ -5,8 +5,8 @@
 
 * [insertRaw](#insertraw) - Insert data into a table.
 * [insertJson](#insertjson) - Insert data into a table.
-* [trainJson](#trainjson) - Train index on the table (IVF and IVFPQ only).
 * [trainRaw](#trainraw) - Train index on the table (IVF and IVFPQ only).
+* [trainJson](#trainjson) - Train index on the table (IVF and IVFPQ only).
 * [vectorSearch](#vectorsearch) - Vector similarity search
 * [hybridSearch](#hybridsearch) - hybrid similarity search
 
@@ -114,6 +114,54 @@ run();
 | errors.ServiceUnavailable  | 503                        | application/json           |
 | errors.SDKError            | 4xx-5xx                    | */*                        |
 
+## trainRaw
+
+Request body is a tuple of (target table name, data table)
+
+### Example Usage
+
+```typescript
+import { Kx } from "kx";
+
+const kx = new Kx({
+  apiKeyAuth: "<YOUR_API_KEY_HERE>",
+});
+
+async function run() {
+  const result = await kx.ai.trainRaw(new TextEncoder().encode("0xEa5CAA8EfC"));
+
+  // Handle the result
+  console.log(result)
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [Uint8Array](../../models/.md)                                                                                                                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+
+### Response
+
+**Promise\<[operations.KdbAiTrainRawResponse](../../models/operations/kdbaitrainrawresponse.md)\>**
+### Errors
+
+| Error Object               | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| errors.Unauthorized        | 401                        | application/json           |
+| errors.Forbidden           | 403                        | application/json           |
+| errors.NotFound            | 404                        | application/json           |
+| errors.TooManyRequests     | 429                        | application/json           |
+| errors.InternalServerError | 500                        | application/json           |
+| errors.ServiceUnavailable  | 503                        | application/json           |
+| errors.SDKError            | 4xx-5xx                    | */*                        |
+
 ## trainJson
 
 Request body is a tuple of (target table name, data table)
@@ -155,54 +203,6 @@ run();
 ### Response
 
 **Promise\<[operations.KdbAiTrainJsonResponse](../../models/operations/kdbaitrainjsonresponse.md)\>**
-### Errors
-
-| Error Object               | Status Code                | Content Type               |
-| -------------------------- | -------------------------- | -------------------------- |
-| errors.Unauthorized        | 401                        | application/json           |
-| errors.Forbidden           | 403                        | application/json           |
-| errors.NotFound            | 404                        | application/json           |
-| errors.TooManyRequests     | 429                        | application/json           |
-| errors.InternalServerError | 500                        | application/json           |
-| errors.ServiceUnavailable  | 503                        | application/json           |
-| errors.SDKError            | 4xx-5xx                    | */*                        |
-
-## trainRaw
-
-Request body is a tuple of (target table name, data table)
-
-### Example Usage
-
-```typescript
-import { Kx } from "kx";
-
-const kx = new Kx({
-  apiKeyAuth: "<YOUR_API_KEY_HERE>",
-});
-
-async function run() {
-  const result = await kx.ai.trainRaw(new TextEncoder().encode("0xEa5CAA8EfC"));
-
-  // Handle the result
-  console.log(result)
-}
-
-run();
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [Uint8Array](../../models/.md)                                                                                                                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
-| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
-
-
-### Response
-
-**Promise\<[operations.KdbAiTrainRawResponse](../../models/operations/kdbaitrainrawresponse.md)\>**
 ### Errors
 
 | Error Object               | Status Code                | Content Type               |
