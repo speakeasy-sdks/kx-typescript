@@ -3,10 +3,10 @@ id: 6f0105da-a1cc-400b-9019-2c40814e5b23
 management:
   docChecksum: 73905a068fec7864107d3c7d9dfe0e3a
   docVersion: 1.0.0
-  speakeasyVersion: 1.345.4
-  generationVersion: 2.378.3
-  releaseVersion: 0.1.3
-  configChecksum: 30c6c33a918701babad4c2cf00a62987
+  speakeasyVersion: 1.346.0
+  generationVersion: 2.379.3
+  releaseVersion: 0.1.4
+  configChecksum: 07491498b2722b8ecd992efc7a61b952
   repoURL: https://github.com/speakeasy-sdks/kx-typescript.git
   installationURL: https://github.com/speakeasy-sdks/kx-typescript
 features:
@@ -14,7 +14,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.5
-    core: 3.11.9
+    core: 3.11.10
     defaultEnabledRetries: 0.1.0
     devContainers: 2.90.0
     downloadStreams: 0.1.1
@@ -85,8 +85,8 @@ generatedFiles:
   - src/models/components/successresponse.ts
   - src/models/components/canonicalquery.ts
   - src/models/components/security.ts
-  - src/models/operations/kdbaitrainjson.ts
   - src/models/operations/kdbaitrainraw.ts
+  - src/models/operations/kdbaitrainjson.ts
   - src/models/operations/kdbaitablemeta.ts
   - src/models/operations/kdbaitabledelete.ts
   - src/models/operations/kdbaitablecreate.ts
@@ -129,8 +129,8 @@ generatedFiles:
   - docs/models/components/successresponse.md
   - docs/models/components/canonicalquery.md
   - docs/models/components/security.md
-  - docs/models/operations/kdbaitrainjsonresponse.md
   - docs/models/operations/kdbaitrainrawresponse.md
+  - docs/models/operations/kdbaitrainjsonresponse.md
   - docs/models/operations/kdbaitablemetarequest.md
   - docs/models/operations/kdbaitabledeleterequest.md
   - docs/models/operations/kdbaitablecreaterequest.md
